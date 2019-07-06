@@ -1,0 +1,56 @@
+<es-store id="0" name="TERMINAL_ROADTEST_DATA_Hive" interval="30">
+
+    <kafka-input id="1" type="kafka" topics="POSITION_CAN_INFORMATION_TOPIC">
+        <params>
+            <param name="auto.offset.reset" value="smallest"/>
+            <param name="group.id" value="RoadTestVehicleHive"/>
+            <param name="refresh.leader.backoff.ms" value="2000"/>
+            <param name="num.consumer.fetchers" value="1"/>
+        </params>
+    </kafka-input>
+
+    <hive-table-defs>
+
+        <hive-table name="road_terminal_02001">
+
+            <settings>
+                <setting  name="database" value="dev_analysis"/>
+                <setting  name="dataDaseDir" value="/user/hive/external/"/>
+                <setting  name="createRule" value="onlyone"/>
+                <setting  name="timeField" value="time"/>
+                <setting  name="partitionType" value="time"/>
+                <setting  name="partitionTimeFormat" value="long"/>
+                <setting  name="partitionFields" value="year,month,day"/>
+                <setting  name="dataMsgIdField" value="msgId"/>
+                <setting  name="dataMsgIds" value="0200_1"/>
+                <setting  name="convertor" value="roadTest"/>
+            </settings>
+
+            <columns>
+                <column name="id" type="string" dataField=""/>
+                <column name="vid" type="string" dataField=""/>
+                <column name="time" type="long" dataField=""/>
+                <column name="receiveMsgTime" type="long" dataField=""/>
+                <column name="state" type="integer" dataField=""/>
+                <column name="canDataExist" type="integer" dataField=""/>
+                <column name="vehicleDrivingStatus" type="integer" dataField=""/>
+                <column name="millisecond" type="integer" dataField=""/>
+                <column name="msgId" type="string" dataField=""/>
+                <column name="longitude" type="double" dataField=""/>
+                <column name="latitude" type="double" dataField=""/>
+                <column name="direction" type="double" dataField=""/>
+                <column name="altitude" type="double" dataField=""/>
+                <column name="gpsSpeed" type="double" dataField=""/>
+                <column name="speed" type="double" dataField=""/>
+
+                <column name="canDataList" type="map[double]" dataField=""/>
+                <column name="highPrecisionPosition" type="map[double]" dataField=""/>
+                <column name="vehicleStatus" type="array[string]" dataField=""/>
+                <column name="alarms" type="array[string]" dataField=""/>
+            </columns>
+
+        </hive-table>
+
+    </hive-table-defs>
+
+</es-store>

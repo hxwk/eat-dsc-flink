@@ -1,0 +1,52 @@
+<es-store id="0" name="ROADTESTVEHICLE_SPF_DATA_TO_ES" interval="30">
+
+    <kafka-input id="1" type="kafka" topics="POSITION_CAN_INFORMATION_TOPIC">
+        <params>
+            <param name="auto.offset.reset" value="smallest"/>
+            <param name="group.id" value="RoadTestVehicle"/>
+            <param name="refresh.leader.backoff.ms" value="2000"/>
+            <param name="num.consumer.fetchers" value="1"/>
+        </params>
+    </kafka-input>
+
+    <es-index-defs>
+
+        <es-index name="road_terminal_02001" createRule="day">
+            <settings>
+                <setting  name="index.analysis.analyzer.default.type" value="keyword"/>
+                <setting  name="index.number_of_shards" value="3"/>
+                <setting  name="index.refresh_interval" value="30s"/>
+                <setting  name="index.translog.durability" value="ASYNC"/>
+                <setting  name="index.translog.flush_threshold_size" value="2g"/>
+                <setting  name="index.translog.sync_interval" value="120s"/>
+            </settings>
+            <es-type name="road_terminal_02001">
+                <identification field="msgId" value="0200_1"/>
+                <timefield field="time" pattern="long" min="1546444800000"/>
+                <convertor id="0200_1" class=""/>
+                <columns>
+                    <column name="canDataExist" type="integer" analyzer="" index="" store=""/>
+
+                    <column name="id" type="keyword" analyzer="" index="" store=""/>
+                    <column name="vid" type="keyword" analyzer="" index="" store=""/>
+                    <column name="time" type="long" analyzer="" index="" store=""/>
+                    <column name="receiveMsgTime" type="long" analyzer="" index="" store=""/>
+                    <column name="state" type="integer" analyzer="" index="" store=""/>
+                    <column name="vehicleDrivingStatus" type="integer" analyzer="" index="" store=""/>
+                    <column name="millisecond" type="integer" analyzer="" index="" store=""/>
+                </columns>
+            </es-type>
+        </es-index>
+
+    </es-index-defs>
+
+    <es-output id="" type="devEs">
+        <params>
+            <param name="es.mapping.id" value="id"/>
+            <param name="es.batch.size.entries" value="5000"/>
+        </params>
+    </es-output>
+
+    <redis-conf dbNum="6" timeout="5000" />
+
+</es-store>

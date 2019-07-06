@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration monitorInterval="60">
+    <Properties>
+        <Property name="pattern">%d{yyyy-MM-dd HH:mm:ss} %c{1.} [%p] %msg%n</Property>
+        <!--<Property name="logDir">./../../logs</Property>-->
+        <Property name="logDir">D:\logs</Property>
+    </Properties>
+
+    <Appenders>
+        <!--必须在这里定义控制台打印的name,否则控制台无法打印日志-->
+        <Console name="consolePrint" target="SYSTEM_OUT">
+            <PatternLayout pattern="${pattern}"/>
+        </Console>
+        <!-- client端的所有日志,建议将程序中的日志都定向到该文件里，与该文件作用相同的文件为nohupClient-->
+        <RollingFile name="clientAll"
+                     fileName="${logDir}/All.log"
+                     filePattern="${logDir}/all_%d{MM-dd-yyyy}-%i.log">
+            <PatternLayout>
+                <pattern>${pattern}</pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="9"/>
+        </RollingFile>
+        <!-- kafka中的日志,建议将程序中的日志都定向到该文件里-->
+        <RollingFile name="kafka"
+                     fileName="${logDir}/kafka/kafka.log"
+                     filePattern="${logDir}/kafka/kafka_%d{MM-dd-yyyy}-%i.log">
+            <PatternLayout>
+                <pattern>${pattern}</pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="9"/>
+        </RollingFile>
+        <!-- mongodb中的日志,建议将程序中的日志都定向到该文件里-->
+        <RollingFile name="mongodb"
+                     fileName="${logDir}/mongodb/mongodb.log"
+                     filePattern="${logDir}/mongodb/mongodb_%d{MM-dd-yyyy}-%i.log">
+            <PatternLayout>
+                <pattern>${pattern}</pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="9"/>
+        </RollingFile>
+        <!-- storeanalyze中的日志,建议将程序中的日志都定向到该文件里-->
+        <RollingFile name="storeanalyze"
+                     fileName="${logDir}/storeanalyze/storeanalyze.log"
+                     filePattern="${logDir}/storeanalyze/storeanalyze_%d{MM-dd-yyyy}-%i.log">
+            <PatternLayout>
+                <pattern>${pattern}</pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="9"/>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <!-- 控制台日志级别,建议INFO,如果是日志按包分层，则一个包里的日志不会出现两次，此时需要将深层的包日志，追加到根模块下的日志，才能形成完整的日志，且包路径越深，优先级越高,additivity属性以包追加的为准-->
+         <Logger name="com.eat.dataplatform.analysis" level="INFO" additivity="false">
+             <AppenderRef ref="consolePrint" />
+         </Logger>
+
+        <!-- client端的所有日志,刷写非常快，平台上线后不建议查看该日志，日志等级建议INFO 如果additivity属性为true，则会将日志追加到下面的root中-->
+        <Logger name="com.eat.dataplatform" level="INFO" additivity="true">
+            <AppenderRef ref="clientAll" />
+        </Logger>
+        <!-- kafka中的所有日志,刷写非常快，平台上线后不建议查看该日志，日志等级建议INFO 如果additivity属性为true，则会将日志追加到下面的root中-->
+        <Logger name="com.eat.dataplatform.analysis.kafka" level="INFO" additivity="true">
+            <AppenderRef ref="kafka" />
+        </Logger>
+        <Logger name="com.eat.dataplatform.analysis.mongodb" level="INFO" additivity="true">
+            <AppenderRef ref="mongodb" />
+        </Logger>
+        <Logger name="com.eat.dataplatform.analysis.storeanalyze" level="INFO" additivity="true">
+            <AppenderRef ref="storeanalyze" />
+        </Logger>
+        <Root level="ALL">
+            <!-- 根目录模块，上面模块的additivity如果为true，则会将日志追加到下面的内容中-->
+            <!--必须在这里引用控制台的name,否则控制台无法打印日志-->
+            <AppenderRef ref="consolePrint" level="INFO"/>
+        </Root>
+    </Loggers>
+</configuration>

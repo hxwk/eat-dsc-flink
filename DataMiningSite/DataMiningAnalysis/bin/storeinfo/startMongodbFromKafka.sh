@@ -1,0 +1,2 @@
+#!/bin/sh
+flink run /opt/example/flink-kafka/DataMiningAnalysis-0.1-SNAPSHOT.jar --input-topic test456 --bootstrap.servers 192.168.10.25:9092 --zookeeper.connect 192.168.10.25:2181 --group.id test456 --mongodb.host 192.168.10.10 --mongodb.port 27017 --mongodb.dbname DevTrunk --mongodb.collectionName CaptureResInfoFromKafka
