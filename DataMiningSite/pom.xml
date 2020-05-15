@@ -31,7 +31,7 @@
         <jedis.version>2.7.2</jedis.version>
         <scala.version>2.11.12</scala.version>
         <scala.binary.version>2.11</scala.binary.version>
-        <fasterxml.jackson.version>2.9.8</fasterxml.jackson.version>
+        <fasterxml.jackson.version>2.11.0</fasterxml.jackson.version>
         <guava.version>23.0</guava.version>
         <flink.connector.kafka.version>1.7.2</flink.connector.kafka.version>
         <fastjson.version>1.2.23</fastjson.version>
