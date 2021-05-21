@@ -38,7 +38,7 @@
         <jdk.version>1.8</jdk.version>
         <java.version>1.8</java.version>
 
-        <flink.java.version>1.7.2</flink.java.version>
+        <flink.java.version>1.9.2</flink.java.version>
         <jedis.version>2.7.2</jedis.version>
         <scala.version>2.11.12</scala.version>
         <guava.version>12.0.1</guava.version>
